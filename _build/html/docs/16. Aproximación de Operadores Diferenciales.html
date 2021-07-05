@@ -1,0 +1,520 @@
+
+<!DOCTYPE html>
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aproximación de operadores diferenciales &#8212; Optimización Numérica en Julia</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.acff12b8f9c144ce68a297486a2fa670.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe,.cell"
+        const thebe_selector_input = "pre,.cell_input div.highlight"
+        const thebe_selector_output = ".output,.cell_output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <link rel="shortcut icon" href="../_static/logo.jpg"/>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="next" title="Método de diferencias finitas" href="17.%20M%C3%A9todo%20de%20diferencias%20finitas.html" />
+    <link rel="prev" title="Introducción a los métodos numéricos" href="15.%20Introducci%C3%B3n%20a%20los%20m%C3%A9todos%20num%C3%A9ricos.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      <img src="../_static/logo.jpg" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Optimización Numérica en Julia</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Buscar este libro ..." aria-label="Buscar este libro ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <div class="bd-toc-item active">
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.%20Las%20libretas%20de%20Jupyter.html">
+   1. Las Libretas de Jupyter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.%20Introducci%C3%B3n%20a%20Markdown.html">
+   2. Introducción a Markdown
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.%20Introducci%C3%B3n%20a%20Julia.html">
+   3. Introducción a Julia
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="4.%20Estructuras%20de%20datos.html">
+   4. Estructuras de datos
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="5.%20Ciclos%20y%20condicionales.html">
+   5. Ciclos y condicionales
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="6.%20Operaciones%20y%20funciones.html">
+   6. Operaciones y funciones
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="7.%20Factorizaciones.html">
+   7. Factorizaciones
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="8.%20Graficas%20y%20animaciones.html">
+   8. Graficas y animaciones
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="9.%20Curvas%20de%20nivel.html">
+   9. Curvas de nivel
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="10.%20Ejercicios%20de%20funciones%20y%20gr%C3%A1ficas.html">
+   10. Ejercicios de funciones y gráficas
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="11.%20Curvas%20de%20nivel%20PlotlyJS.html">
+   11. Curvas de nivel PlotlyJS
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="12.%20Lenguaje%20simb%C3%B3lico%20SymEngine.html">
+   12. Lenguaje simbólico SymEngine
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="13.%20Ejemplo%20de%20m%C3%B3dulos.html">
+   13. Ejemplo de módulos
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="14.%20Gradiente%20conjugado.html">
+   14. Gradiente conjugado
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="15.%20Introducci%C3%B3n%20a%20los%20m%C3%A9todos%20num%C3%A9ricos.html">
+   15. Introducción a los métodos numéricos
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   16. Aproximación de operadores diferenciales
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="17.%20M%C3%A9todo%20de%20diferencias%20finitas.html">
+   17. Método de diferencias finitas
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Navegación de palanca" aria-controls="site-navigation"
+                title="Navegación de palanca" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Descarga esta pagina"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/docs/16. Aproximación de operadores diferenciales.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Descargar archivo fuente" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Imprimir en PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Modo de pantalla completa"
+        title="Modo de pantalla completa"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/Jeshua-Romero-Guadarrama/IntroduccionCienciaDatosPython/master?urlpath=tree/book/docs/16. Aproximación de operadores diferenciales.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Lanzamiento Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        <a class="colab-button" href="https://colab.research.google.com/github/Jeshua-Romero-Guadarrama/IntroduccionCienciaDatosPython/blob/master/book/docs/16. Aproximación de operadores diferenciales.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
+                title="Lanzamiento Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
+                    src="../_static/images/logo_colab.png"
+                    alt="Interact on Colab">Colab</button></a>
+        
+        <button type="button" class="btn btn-secondary topbarbtn"
+            onclick="initThebeSBT()" title="Lanzamiento Thebe" data-toggle="tooltip" data-placement="left"><i
+                class="fas fa-play"></i><span style="margin-left: .4em;">Live Code</span></button>
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contenido
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#aproximacion-de-f">
+   Aproximación de
+   <span class="math notranslate nohighlight">
+    \(f'\)
+   </span>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id1">
+   Aproximación de
+   <span class="math notranslate nohighlight">
+    \(f''\)
+   </span>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#para-una-funcion-f-f-x-y">
+   Para una función
+   <span class="math notranslate nohighlight">
+    \(f=f(x,y)\)
+   </span>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ecuacion-de-diferencias-para-el-laplaciano">
+     Ecuación de diferencias para el Laplaciano
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#font-color-blue-metodo-de-diferencias-finitas-para-la-ecuacion-de-poisson-font">
+   <font color="blue">
+    Método de Diferencias Finitas para la ecuación de Poisson.
+    <font>
+    </font>
+   </font>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#problemas-de-dirichlet">
+     Problemas de Dirichlet.
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#metodo-de-diferencias-finitas">
+       Método de diferencias finitas
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="contents topic" id="contenido">
+<p class="topic-title">Contenido</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#aproximacion-de-operadores-diferenciales" id="id2">Aproximación de operadores diferenciales</a></p>
+<ul>
+<li><p><a class="reference internal" href="#aproximacion-de-f" id="id3">Aproximación de <span class="math notranslate nohighlight">\(f'\)</span></a></p></li>
+<li><p><a class="reference internal" href="#id1" id="id4">Aproximación de <span class="math notranslate nohighlight">\(f''\)</span></a></p></li>
+<li><p><a class="reference internal" href="#para-una-funcion-f-f-x-y" id="id5">Para una función <span class="math notranslate nohighlight">\(f=f(x,y)\)</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#ecuacion-de-diferencias-para-el-laplaciano" id="id6">Ecuación de diferencias para el Laplaciano</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#font-color-blue-metodo-de-diferencias-finitas-para-la-ecuacion-de-poisson-font" id="id7"><font color=blue>Método de Diferencias Finitas para la ecuación de Poisson.<font></a></p>
+<ul>
+<li><p><a class="reference internal" href="#problemas-de-dirichlet" id="id8">Problemas de Dirichlet.</a></p>
+<ul>
+<li><p><a class="reference internal" href="#metodo-de-diferencias-finitas" id="id9">Método de diferencias finitas</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="aproximacion-de-operadores-diferenciales">
+<h1><a class="toc-backref" href="#id2">Aproximación de operadores diferenciales</a><a class="headerlink" href="#aproximacion-de-operadores-diferenciales" title="Enlazar permanentemente con este título">¶</a></h1>
+<div class="section" id="aproximacion-de-f">
+<h2><a class="toc-backref" href="#id3">Aproximación de <span class="math notranslate nohighlight">\(f'\)</span></a><a class="headerlink" href="#aproximacion-de-f" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Podemos aproximar la derivada de una función
+$<span class="math notranslate nohighlight">\(f^{\prime }(x)=\lim _{h\to 0}{f(x+h)-f(x) \over h}\)</span>$
+por las expresiones:</p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\(f^{\prime }(x)\approx {f(x+h)-f(x) \over h}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(f^{\prime }(x)\approx {f(x)-f(x-h) \over h}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(f^{\prime }(x)\approx {f(x+h)-f(x-h) \over 2h}\)</span></p></li>
+</ol>
+<p>que son buenas aproximaciones para <span class="math notranslate nohighlight">\(h\)</span> pequeño.</p>
+<p>En efecto, para <span class="math notranslate nohighlight">\(f^{\prime }(x)\approx {f(x+h)-f(x-h) \over 2h}\)</span> tenemos:</p>
+<p>Usamos la fórmula de Taylor de <span class="math notranslate nohighlight">\(f\)</span> alrededor de <span class="math notranslate nohighlight">\(x\)</span> para <span class="math notranslate nohighlight">\(f(x-h)\)</span> y <span class="math notranslate nohighlight">\(f(x+h)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[f(x+h)=f(x)+f'(x)h+\frac{f''(x)h^2}{2!}+\frac{f'''(c_1)h^3}{3!}\]</div>
+<div class="math notranslate nohighlight">
+\[f(x-h)=f(x)-f'(x)h+\frac{f''(x)h^2}{2!}-\frac{f'''(c_2)h^3}{3!}\]</div>
+<p>Restando ambas expresiones:
+$<span class="math notranslate nohighlight">\(f(x+h)-f(x-h)=2f'(x)h+\frac{f'''(c_1)h^3+f'''(c_2)h^3}{3!}\)</span>$</p>
+<p>Despejando <span class="math notranslate nohighlight">\(f'\)</span>
+$<span class="math notranslate nohighlight">\(f^{\prime }(x)= {f(x+h)-f(x-h) \over 2h}+\mathcal{O}(h^2)\)</span>$</p>
+<div class="math notranslate nohighlight">
+\[\therefore f^{\prime }(x)\approx {f(x+h)-f(x-h) \over 2h} \]</div>
+</div>
+<div class="section" id="id1">
+<h2><a class="toc-backref" href="#id4">Aproximación de <span class="math notranslate nohighlight">\(f''\)</span></a><a class="headerlink" href="#id1" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Usamos la fórmula de Taylor de <span class="math notranslate nohighlight">\(f\)</span> alrededor de <span class="math notranslate nohighlight">\(x\)</span> para <span class="math notranslate nohighlight">\(f(x-h)\)</span> y <span class="math notranslate nohighlight">\(f(x+h)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[f(x+h)=f(x)+f'(x)h+\frac{f''(x)h^2}{2!}+\frac{f^{(3)}(x)h^3}{3!}+\frac{f^{(4)} (c_1)h^4}{4!}\]</div>
+<div class="math notranslate nohighlight">
+\[f(x-h)=f(x)-f'(x)h+\frac{f''(x)h^2}{2!}-\frac{f^{(3)}(x)h^3}{3!}+\frac{f^{(4)} (c_2)h^4}{4!}\]</div>
+<p>Sumando ambas expresiones:
+$<span class="math notranslate nohighlight">\(f(x+h)+f(x-h)=2f(x)+2\frac{f''(x)h^2}{2!}+\frac{f^{(4)}(c_1)h^4+f^{(4)}(c_2)h^4}{4!}\)</span>$</p>
+<p>Despejando <span class="math notranslate nohighlight">\(f''\)</span>
+$<span class="math notranslate nohighlight">\(f^{''}(x)= {f(x+h)+2f(x)+f(x-h) \over h^2}+\mathcal{O}(h^2)\)</span>$</p>
+<div class="math notranslate nohighlight">
+\[\therefore f^{''}(x)= {f(x+h)+2f(x)+f(x-h) \over h^2} \]</div>
+</div>
+<div class="section" id="para-una-funcion-f-f-x-y">
+<h2><a class="toc-backref" href="#id5">Para una función <span class="math notranslate nohighlight">\(f=f(x,y)\)</span></a><a class="headerlink" href="#para-una-funcion-f-f-x-y" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>\begin{aligned}
+f_{x}(x,y)&amp;\approx {\frac {f(x+h,y)-f(x-h,y)}{2h}}\f_{y}(x,y)&amp;\approx {\frac {f(x,y+k)-f(x,y-k)}{2k}}\
+f_{xx}(x,y)&amp;\approx {\frac {f(x+h,y)-2f(x,y)+f(x-h,y)}{h^{2}}}\
+f_{yy}(x,y)&amp;\approx {\frac {f(x,y+k)-2f(x,y)+f(x,y-k)}{k^{2}}}\
+f_{xy}(x,y)&amp;\approx {\frac {f(x+h,y+k)-f(x+h,y-k)-f(x-h,y+k)+f(x-h,y-k)}{4hk}}\end{aligned}</p>
+<div class="section" id="ecuacion-de-diferencias-para-el-laplaciano">
+<h3><a class="toc-backref" href="#id6">Ecuación de diferencias para el Laplaciano</a><a class="headerlink" href="#ecuacion-de-diferencias-para-el-laplaciano" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>En coordenadas cartesianas $<span class="math notranslate nohighlight">\( \Delta u={\frac {\partial ^{2}u}{\partial x^{2}}}+{\frac {\partial ^{2}u}{\partial y^{2}}}\)</span>$</p>
+<p>Si $<span class="math notranslate nohighlight">\({\frac {\partial ^{2}u}{\partial x^{2}}} \approx {\frac {u(x+h,y)-2u(x,y)+u(x-h,y)}{h^{2}}}\)</span><span class="math notranslate nohighlight">\( \)</span><span class="math notranslate nohighlight">\({\frac {\partial ^{2}u}{\partial y^{2}}} \approx {\frac {u(x,y+k)-2u(x,y)+u(x,y-k)}{k^{2}}}\)</span>$</p>
+<p>Entonces:</p>
+<div class="math notranslate nohighlight">
+\[ \Delta u={\frac {\partial ^{2}u}{\partial x^{2}}}+{\frac {\partial ^{2}u}{\partial y^{2}}}\approx {\frac {u(x-h,y)+u(x+h,y)-4u(x,y)+u(x,y-k)+u(x,y+k)}{h^{2}}}\]</div>
+</div>
+</div>
+<div class="section" id="font-color-blue-metodo-de-diferencias-finitas-para-la-ecuacion-de-poisson-font">
+<h2><a class="toc-backref" href="#id7"><font color=blue>Método de Diferencias Finitas para la ecuación de Poisson.<font></a><a class="headerlink" href="#font-color-blue-metodo-de-diferencias-finitas-para-la-ecuacion-de-poisson-font" title="Enlazar permanentemente con este título">¶</a></h2>
+<div class="section" id="problemas-de-dirichlet">
+<h3><a class="toc-backref" href="#id8">Problemas de Dirichlet.</a><a class="headerlink" href="#problemas-de-dirichlet" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>El problema de DIRICHLET en el plano es</p>
+<p>Hallar la función <span class="math notranslate nohighlight">\(u(x,y)\)</span> verifcando:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\Delta u={\frac {\partial ^{2}u}{\partial x^{2}}}+{\frac {\partial ^{2}u}{\partial y^{2}}}=f(x,y), \ \  (x,y)\in R\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(u(x,y) =g(x,y)\)</span>,</p></li>
+<li><p>si <span class="math notranslate nohighlight">\((x,y)∈\partial R\)</span> entonces <span class="math notranslate nohighlight">\(u(x,y)\)</span> es continua en <span class="math notranslate nohighlight">\(R\)</span></p></li>
+</ul>
+<p>donde <span class="math notranslate nohighlight">\(R\)</span> es un dominio abierto de <span class="math notranslate nohighlight">\(\mathbb{R}^2\)</span>.</p>
+<p>En particular supongamos que <span class="math notranslate nohighlight">\(R=(0,1)\times (0,1)\)</span>
+y tomamos una red de <span class="math notranslate nohighlight">\(M\times M\)</span>-nodos interiores uniformemente distribuidos; es decir, cada nodo es: $<span class="math notranslate nohighlight">\((x_i,y_j):=(ih,jh)\)</span><span class="math notranslate nohighlight">\( con \)</span>h=\frac{1}{M+1} , \ \ \ i,j= 0,1,\ldots,M+1$</p>
+<p>Las condiciones de frontera quedan en la forma siguiente:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(u(x,0) =f_0(x),\ \ \ \)</span> <span class="math notranslate nohighlight">\(u(x,1) =f_1(x), \ \ 0\leq x \leq 1 \)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(u(0,y) =g_0(y),\ \ \ \)</span>  <span class="math notranslate nohighlight">\(u(1,y) =g_1(y), \ \ 0\leq y \leq 1 \)</span></p></li>
+</ul>
+<div class="section" id="metodo-de-diferencias-finitas">
+<h4><a class="toc-backref" href="#id9">Método de diferencias finitas</a><a class="headerlink" href="#metodo-de-diferencias-finitas" title="Enlazar permanentemente con este título">¶</a></h4>
+<div class="math notranslate nohighlight">
+\[\frac {\partial ^{2}u}{\partial x^{2}} \approx \frac{u_{i+1,j}−2u_{ij}+u_{i-1,j}}{h^2}\]</div>
+<div class="math notranslate nohighlight">
+\[\frac {\partial ^{2}u}{\partial x^{2}} \approx \frac{u_{i,j+1}−2u_{ij}+u_{i,j-1}}{h^2}\]</div>
+<p>Desde aquí, la ecuación de Poisson tiene la discretización siguiente:</p>
+<div class="math notranslate nohighlight">
+\[v_{i−1,j}+v_{i+1,j}−4v_{ij}+v_{i,j−1}+v_{i,j+1}=h^2f(x_i,y_j)\]</div>
+<p>para <span class="math notranslate nohighlight">\(i,j= 1,\ldots ,M\)</span></p>
+<p>que junto a las condiciones de frontera</p>
+<div class="math notranslate nohighlight">
+\[v_{0j}=f_{0}(0,y_j), \ \ v_{M+1,j}=f_1(1,y_j)$$ $$v_{i0}=g_0(x_i,0),\ \ v_{i,M+1}=g_1(x_i,1)\]</div>
+<p>conduce a un sistema de <span class="math notranslate nohighlight">\(M^2\)</span> ecuaciones, que en forma matricial se puede expresar como:</p>
+<div class="math notranslate nohighlight">
+\[\textbf{Av}=-\textbf{b}+h^2\textbf{F}\]</div>
+<p>donde $<span class="math notranslate nohighlight">\(A=\begin{pmatrix} B &amp; I &amp; 0 &amp; 0 \\ I &amp; B &amp; \ddots &amp; 0\\ 0 &amp; \ddots&amp; \ddots&amp; I \\ 0 &amp; 0 &amp; I &amp; B\end{pmatrix}\)</span><span class="math notranslate nohighlight">\( con \)</span><span class="math notranslate nohighlight">\(B=\begin{pmatrix} -4 &amp; 1 &amp; 0 &amp; 0 \\ 1 &amp; -4 &amp; \ddots &amp; 0\\ 0 &amp; \ddots&amp; \ddots&amp; 1 \\ 0 &amp; 0 &amp; 1 &amp; -4\end{pmatrix}_{M\times M}\ ;  \ \text{  } I=I_M\)</span>$</p>
+<p><span class="math notranslate nohighlight">\(\textbf{v}= (v_{11},\ldots,v_{M1},v_{12},\ldots,v_{M2},\ldots,\ldots,v_{1M},\ldots,v_{MM})^t\)</span></p>
+<p><span class="math notranslate nohighlight">\(\textbf{b}= (b_1,\ldots,b_i,\ldots,b_M)^t\)</span></p>
+<p><span class="math notranslate nohighlight">\(b_1= (v_{01}+v_{10},v_{20},\ldots,v_{M−1,0},v_{M0}+v_{M+1,1})\)</span></p>
+<p><span class="math notranslate nohighlight">\(b_j= (v_{0j},0,\ldots,0,v_{M+1,j})\ \)</span> si <span class="math notranslate nohighlight">\(\ j= 2,\ldots,M−1\)</span></p>
+<p><span class="math notranslate nohighlight">\(b_M= (v_{0M}+v_{1,M+1},v_{2,M+1},\ldots,v_{M−1,M+1},v_{M,M+1}+v_{M+1,M})\)</span></p>
+<p><span class="math notranslate nohighlight">\(\textbf{F}= (f_{11},\ldots,f_{M1},f_{12},\ldots,f_{M2},\ldots,\ldots,f_{1M},\ldots,f_{MM})^t\)</span></p>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "Jeshua-Romero-Guadarrama/IntroduccionCienciaDatosPython",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "julia-1.6"
+        },
+        kernelOptions: {
+            kernelName: "julia-1.6",
+            path: "./docs"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'julia-1.6'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="15.%20Introducci%C3%B3n%20a%20los%20m%C3%A9todos%20num%C3%A9ricos.html" title="previous page">Introducción a los métodos numéricos</a>
+    <a class='right-next' id="next-link" href="17.%20M%C3%A9todo%20de%20diferencias%20finitas.html" title="next page">Método de diferencias finitas</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          Por Jeshua Romero Guadarrama<br/>
+        
+            &copy; Derechos de autor 2021.<br/>
+          <div class="extra_footer">
+            <script src="https://kit.fontawesome.com/37a97f957d.js" crossorigin="anonymous"></script> <script>mermaid.init();</script> <div class="container-lg mt-3"> <div class="row"> <div class="col-xl-3"> <div class="footerImages"> <br> <br> <br> <br> <a href="https://www.jeshuanomics.com/"><img src="https://raw.githubusercontent.com/Jeshua-Romero-Guadarrama/CienciaDatosPython/main/images/Logo.png" height="120" alt="JeshuaNomics" style="float:center"></a><br> </div> </div> <div class="col-xl-6 d-flex"> <div class="container"> <a href="https://www.datascience.jeshuanomics.com/"><img src="https://raw.githubusercontent.com/Jeshua-Romero-Guadarrama/CienciaDatosPython/main/images/banner.png" alt="JeshuaNomics-blanco" style="background:white; padding:10px; height:66px;"></a><br> <div class="mb-3"><a href="https://www.jeshuanomics.com/"><span class="label"></span>JeshuaNomics - DataScience</a></div> <div class="row"> <div class="col-6 d-flex" style="justify-content:center"> <ul> <li><a href="https://github.com/JeshuaNomics"><i class="fa fa-github" aria-hidden="true"></i><span class="label"></span> Git Hub  </a></li> <li><a href="https://www.facebook.com/JeshuaNomics/"><i class="fa fa-facebook" aria-hidden="true"></i><span class="label"></span> Facebook  </a></li> <li><a href="https://twitter.com/JeshuaNomics"><i class="fa fa-twitter" aria-hidden="true"></i><span class="label"></span> Twitter  </a></li> <li><a href="https://www.linkedin.com/in/jeshua-romero-guadarrama/"><i class="fa fa-linkedin" aria-hidden="true"></i> Linkedin  </a></li> <li><a href="mailto:jeshuanomics@gmail.com?Subject=Ciencia%20de%20Datos"><i class="fa fa-envelope" aria-hidden="true"></i><span class="label"></span> Contáctanos </a></li> </ul> </div> <div class="col-6 d-flex" style="justify-content:center"> <ul> <li><a href="https://vk.com/jeshuanomics"><i class="fa fa-vk" aria-hidden="true"></i><span class="label"></span> Vkontakte  </a></li> <li><a href="https://jeshuanomics.tumblr.com/"><i class="fa fa-tumblr" aria-hidden="true"></i><span class="label"></span> Tumblr  </a></li> <li><a href="https://www.youtube.com/channel/UCY7f84mJGvMN7TF7XI4-Jgg?view_as=subscriber/"><i class="fa fa-youtube-play" aria-hidden="true"></i><span class="label"></span> YouTube  </a></li> <li><a href="https://www.instagram.com/JeshuaNomics/"><i class="fa fa-instagram" aria-hidden="true"></i><span class="label"></span> Instagram  </a></li> <li><a href="/CienciaDatosPython/content/recipes/boilerplate/people.html"><i class="fab fa-paypal" aria-hidden="true"></i><span class="label"></span> Donar </a></li> </ul> </div> </div> </div> </div> <div class="col-xl-3"> <br> <br> <br> <br> <a href="https://www.datascience.jeshuanomics.com/"><img src="https://raw.githubusercontent.com/Jeshua-Romero-Guadarrama/CienciaDatosPython/main/images/Python.png" height="60" alt="Python" style="float:center"></a><br> <a href="https://www.unam.mx/"><img src="https://raw.githubusercontent.com/Jeshua-Romero-Guadarrama/CienciaDatosPython/main/images/UNAM.png" height="68" alt="UNAM" style="float:center"></a><br> </div> </div> </div> <div class="row_footer my-3"> Optimización Numércia en Julia is licensed under the <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International</a> (CC BY 4.0) license. </div>
+          </div>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

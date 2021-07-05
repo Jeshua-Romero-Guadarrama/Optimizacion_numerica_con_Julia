@@ -1,0 +1,37 @@
+format: jb-book
+root: docs/Sobre_este_sitio
+chapters:
+  - file: docs/1. Las libretas de Jupyter
+    title: 1. Las Libretas de Jupyter
+  - file: docs/2. Introducción a Markdown
+    title: 2. Introducción a Markdown
+  - file: docs/3. Introducción a Julia
+    title: 3. Introducción a Julia
+  - file: docs/4. Estructuras de datos
+    title: 4. Estructuras de datos
+  - file: docs/5. Ciclos y condicionales
+    title: 5. Ciclos y condicionales
+  - file: docs/6. Operaciones y funciones
+    title: 6. Operaciones y funciones
+  - file: docs/7. Factorizaciones
+    title: 7. Factorizaciones
+  - file: docs/8. Graficas y animaciones
+    title: 8. Graficas y animaciones
+  - file: docs/9. Curvas de nivel
+    title: 9. Curvas de nivel
+  - file: docs/10. Ejercicios de funciones y gráficas
+    title: 10. Ejercicios de funciones y gráficas
+  - file: docs/11. Curvas de nivel PlotlyJS
+    title: 11. Curvas de nivel PlotlyJS
+  - file: docs/12. Lenguaje simbólico SymEngine
+    title: 12. Lenguaje simbólico SymEngine
+  - file: docs/13. Ejemplo de módulos
+    title: 13. Ejemplo de módulos
+  - file: docs/14. Gradiente conjugado
+    title: 14. Gradiente conjugado
+  - file: docs/15. Introducción a los métodos numéricos
+    title: 15. Introducción a los métodos numéricos
+  - file: docs/16. Aproximación de operadores diferenciales
+    title: 16. Aproximación de operadores diferenciales
+  - file: docs/17. Método de diferencias finitas
+    title: 17. Método de diferencias finitas
