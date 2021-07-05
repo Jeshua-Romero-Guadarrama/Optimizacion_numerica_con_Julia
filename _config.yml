@@ -5,7 +5,7 @@ author                        : Jeshua Romero Guadarrama
 logo                          : 'logo.png'
 email                         : jeshua_romero_guadarrama@ciencias.unam.mx
 description: >-
-  Este libro presenta un conjunto de conferencias sobre programación Julia para Optimización Numérica 2021-2 por **Pablo Barrera Sánchez** y **Mario Rafael Nolasco Estrada**.
+  Este libro presenta un conjunto de conferencias sobre programación Julia para Optimización Numérica por **Jeshua Romero Guadarrama**.
 
 only_build_toc_files          : true
 
@@ -18,7 +18,8 @@ latex:
 
 html:
   favicon                     : 'logo.png'
-  home_page_in_navbar         : false
+  home_page_in_navbar         : true
+  navbar_number_sections      : true
   use_edit_page_button        : false
   use_repository_button       : false
   use_issue_button            : true
@@ -40,7 +41,7 @@ html:
         <div class="col-xl-6 d-flex">
           <div class="container">
             <center><a href="https://www.datascience.jeshuanomics.com/"><img src="https://raw.githubusercontent.com/Jeshua-Romero-Guadarrama/CienciaDatosPython/main/images/banner.png" alt="JeshuaNomics-blanco" style="background:white; padding:10px; height:66px;"></a></center>
-            <center><div class="mb-3"><a href="https://www.jeshuanomics.com/"><span class="label"></span>JeshuaNomics - DataScience</a></div></center>
+            <center><div class="mb-3"><a href="https://www.datascience.jeshuanomics.com/"><span class="label"></span>JeshuaNomics - DataScience</a></div></center>
             <div class="row">
               <div class="col-6 d-flex" style="justify-content:center">
                 <ul>
@@ -76,6 +77,7 @@ html:
     <div class="row_footer my-3">        
       <center>Optimización Numércia en Julia is licensed under the <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International</a> (CC BY 4.0) license.</center>
     </div>
+  google_analytics_id         :
   comments:
     hypothesis                : true
 
