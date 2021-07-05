@@ -22,6 +22,7 @@ html:
   use_edit_page_button        : false
   use_repository_button       : false
   use_issue_button            : true
+  extra_navbar                : Powered by <a href="https://www.jeshuanomics.com/">JeshuaNomics</a>
   extra_footer                :
     <script src="https://kit.fontawesome.com/37a97f957d.js" crossorigin="anonymous"></script>
     <script>mermaid.init();</script>
