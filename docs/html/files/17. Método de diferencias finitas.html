@@ -1,0 +1,789 @@
+
+<!DOCTYPE html>
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Método de diferencias finitas &#8212; Optimización Numérica en Julia</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.acff12b8f9c144ce68a297486a2fa670.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe,.cell"
+        const thebe_selector_input = "pre,.cell_input div.highlight"
+        const thebe_selector_output = ".output,.cell_output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <link rel="shortcut icon" href="../_static/logo.png"/>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="prev" title="Aproximación de operadores diferenciales" href="16.%20Aproximaci%C3%B3n%20de%20operadores%20diferenciales.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      <img src="../_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Optimización Numérica en Julia</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Buscar este libro ..." aria-label="Buscar este libro ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <div class="bd-toc-item active">
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.%20Las%20libretas%20de%20Jupyter.html">
+   1. Las Libretas de Jupyter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.%20Introducci%C3%B3n%20a%20Markdown.html">
+   2. Introducción a Markdown
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.%20Introducci%C3%B3n%20a%20Julia.html">
+   3. Introducción a Julia
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="4.%20Estructuras%20de%20datos.html">
+   4. Estructuras de datos
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="5.%20Ciclos%20y%20condicionales.html">
+   5. Ciclos y condicionales
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="6.%20Operaciones%20y%20funciones.html">
+   6. Operaciones y funciones
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="7.%20Factorizaciones.html">
+   7. Factorizaciones
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="8.%20Graficas%20y%20animaciones.html">
+   8. Graficas y animaciones
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="9.%20Curvas%20de%20nivel.html">
+   9. Curvas de nivel
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="10.%20Ejercicios%20de%20funciones%20y%20gr%C3%A1ficas.html">
+   10. Ejercicios de funciones y gráficas
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="11.%20Curvas%20de%20nivel%20PlotlyJS.html">
+   11. Curvas de nivel PlotlyJS
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="12.%20Lenguaje%20simb%C3%B3lico%20SymEngine.html">
+   12. Lenguaje simbólico SymEngine
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="13.%20Ejemplo%20de%20m%C3%B3dulos.html">
+   13. Ejemplo de módulos
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="14.%20Gradiente%20conjugado.html">
+   14. Gradiente conjugado
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="15.%20Introducci%C3%B3n%20a%20los%20m%C3%A9todos%20num%C3%A9ricos.html">
+   15. Introducción a los métodos numéricos
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="16.%20Aproximaci%C3%B3n%20de%20operadores%20diferenciales.html">
+   16. Aproximación de operadores diferenciales
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   17. Método de diferencias finitas
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Navegación de palanca" aria-controls="site-navigation"
+                title="Navegación de palanca" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Descarga esta pagina"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/files/17. Método de diferencias finitas.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Descargar archivo fuente" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Imprimir en PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Modo de pantalla completa"
+        title="Modo de pantalla completa"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/Jeshua-Romero-Guadarrama/IntroduccionCienciaDatosPython/master?urlpath=tree/book/files/17. Método de diferencias finitas.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Lanzamiento Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        <a class="colab-button" href="https://colab.research.google.com/github/Jeshua-Romero-Guadarrama/IntroduccionCienciaDatosPython/blob/master/book/files/17. Método de diferencias finitas.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
+                title="Lanzamiento Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
+                    src="../_static/images/logo_colab.png"
+                    alt="Interact on Colab">Colab</button></a>
+        
+        <button type="button" class="btn btn-secondary topbarbtn"
+            onclick="initThebeSBT()" title="Lanzamiento Thebe" data-toggle="tooltip" data-placement="left"><i
+                class="fas fa-play"></i><span style="margin-left: .4em;">Live Code</span></button>
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contenido
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#font-color-blue-problema-en-una-dimension-con-condiciones-de-frontera-dirichlet-font">
+   <font color="blue">
+    Problema en una dimensión con Condiciones de Frontera Dirichlet
+    <font>
+    </font>
+   </font>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#font-color-blue-implementacion-numerica-font">
+     <font color="blue">
+      Implementación numérica
+      <font>
+      </font>
+     </font>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#font-color-blue-ejemplo-01-font">
+       <font color="blue">
+        Ejemplo 01
+        <font>
+        </font>
+       </font>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#font-color-blue-ejemplo-02-font">
+       <font color="blue">
+        Ejemplo 02
+        <font>
+        </font>
+       </font>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#font-color-blue-ejemplo-03-font">
+       <font color="blue">
+        Ejemplo 03
+        <font>
+        </font>
+       </font>
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="contents topic" id="contenido">
+<p class="topic-title">Contenido</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#metodo-de-diferencias-finitas" id="id1">Método de diferencias finitas</a></p>
+<ul>
+<li><p><a class="reference internal" href="#font-color-blue-problema-en-una-dimension-con-condiciones-de-frontera-dirichlet-font" id="id2"><font color=blue> Problema en una dimensión con Condiciones de Frontera Dirichlet<font></a></p>
+<ul>
+<li><p><a class="reference internal" href="#font-color-blue-implementacion-numerica-font" id="id3"><font color=blue> Implementación numérica<font></a></p>
+<ul>
+<li><p><a class="reference internal" href="#font-color-blue-ejemplo-01-font" id="id4"><font color=blue> Ejemplo 01 <font></a></p></li>
+<li><p><a class="reference internal" href="#font-color-blue-ejemplo-02-font" id="id5"><font color=blue> Ejemplo 02<font></a></p></li>
+<li><p><a class="reference internal" href="#font-color-blue-ejemplo-03-font" id="id6"><font color=blue> Ejemplo 03<font></a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="metodo-de-diferencias-finitas">
+<h1><a class="toc-backref" href="#id1">Método de diferencias finitas</a><a class="headerlink" href="#metodo-de-diferencias-finitas" title="Enlazar permanentemente con este título">¶</a></h1>
+<p>Dada la ecuación diferencial, aplicar el Método de Diferencias Finitas Centradas consiste en:</p>
+<ul class="simple">
+<li><p>Generar una malla del dominio.</p></li>
+<li><p>Sustituir las aproximaciones a las derivadas para obtener un sistema algebraico de ecuaciones $<span class="math notranslate nohighlight">\(Au = b\)</span>$</p></li>
+<li><p>Resolver el sistema de ecuaciones para obtener la aproximación a la solución en cada punto de la malla.</p></li>
+</ul>
+<div class="section" id="font-color-blue-problema-en-una-dimension-con-condiciones-de-frontera-dirichlet-font">
+<h2><a class="toc-backref" href="#id2"><font color=blue> Problema en una dimensión con Condiciones de Frontera Dirichlet<font></a><a class="headerlink" href="#font-color-blue-problema-en-una-dimension-con-condiciones-de-frontera-dirichlet-font" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Considéremos la ecuación $<span class="math notranslate nohighlight">\(u_{xx} + p (x) u_x + q (x) u = f (x)\)</span>$</p>
+<p>con <span class="math notranslate nohighlight">\(x\in [\alpha, \beta]\)</span> y condiciones de frontera:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} {\begin{cases}u(\alpha)=u_\alpha\,\\u(\beta)=u_\beta\end{cases}}\end{split}\]</div>
+<p>Generación de una malla del dominio, partición del intervalo <span class="math notranslate nohighlight">\([\alpha, \beta]\)</span> en <span class="math notranslate nohighlight">\(n+2\)</span> puntos:</p>
+<div class="math notranslate nohighlight">
+\[x_i = \alpha  + ih\]</div>
+<p>con <span class="math notranslate nohighlight">\(i = 1, 2, \ldots , n\)</span> y <span class="math notranslate nohighlight">\(h = \Delta x = \frac{\beta-\alpha}{n+1}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[x_0=\alpha, \ \ \ x_{n+1}=\beta\]</div>
+<p>Aproximación de las derivadas por medio de diferencias centradas:
+$<span class="math notranslate nohighlight">\(u_{xx} =\frac{u_{i-1} - 2u_i + u_{i+1}}{h^2}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(u_x =\frac{u_{i+1} - u_{i-1}}{2h}\)</span>$</p>
+<p>Sustituyendo en la ecuación diferencial:
+$<span class="math notranslate nohighlight">\(\frac{u_{i-1} - 2u_i + u_{i+1}}{h^2}+p_i\frac{u_{i+1} - u_{i-1}}{2h}+q_iu_i=f_i\)</span>$</p>
+<p>donde <span class="math notranslate nohighlight">\( p_i, q_i, f_i\)</span> son las evaluaciones <span class="math notranslate nohighlight">\(p (x), q (x), f (x)\)</span> en <span class="math notranslate nohighlight">\(x=x_i\)</span>, respectivamente.</p>
+<p>Agrupando los términos obtenemos:</p>
+<div class="math notranslate nohighlight">
+\[\left[\frac{1}{h^2}-\frac{p_i}{2h}\right]u_{i-1}+\left[q_i-\frac{2}{h^2}\right]u_i+ \left[\frac{1}{h^2}+\frac{p_i}{2h}\right]u_{i+1}=f_i\]</div>
+<p>de donde se obtiene el sistema de ecuaciones
+\begin{align*}
+\left[\frac{1}{h^2}-\frac{p_1}{2h}\right]u_{\alpha}+\left[q_1-\frac{2}{h^2}\right]u_1+ \left[\frac{1}{h^2}+\frac{p_1}{2h}\right]u_{2}&amp;=f_1\
+\left[\frac{1}{h^2}-\frac{p_2}{2h}\right]u_{1}+\left[q_2-\frac{2}{h^2}\right]u_2+ \left[\frac{1}{h^2}+\frac{p_2}{2h}\right]u_{3}&amp;=f_2\
+\left[\frac{1}{h^2}-\frac{p_3}{2h}\right]u_{2}+\left[q_3-\frac{2}{h^2}\right]u_3+ \left[\frac{1}{h^2}+\frac{p_3}{2h}\right]u_{4}&amp;=f_3\
+\vdots\
+\left[\frac{1}{h^2}-\frac{p_{n-1}}{2h}\right]u_{n-2}+\left[q_{n-1}-\frac{2}{h^2}\right]u_{n-1}+ \left[\frac{1}{h^2}+\frac{p_{n-1}}{2h}\right]u_{n}&amp;=f_{n-1}\
+\left[\frac{1}{h^2}-\frac{p_n}{2h}\right]u_{n-1}+\left[q_n-\frac{2}{h^2}\right]u_{n}+ \left[\frac{1}{h^2}+\frac{p_n}{2h}\right]u_{\beta}&amp;=f_n
+\end{align*}</p>
+<p>escribiendo forma vectorial</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{pmatrix} q_1 h^2 - 2 &amp; 1+\frac{p_1h}{2}\\ 1-\frac{p_2h}{2}&amp;q_2 h^2 - 2 &amp; 1+\frac{p_2h}{2}\\  &amp;1-\frac{p_3h}{2}&amp;q_3 h^2 - 2 &amp; 1+\frac{p_3h}{2}\\ &amp; &amp;  \ddots  &amp; \ddots  &amp; \ddots \\ 
+&amp; &amp; &amp;  1-\frac{p_{n-1}h}{2}&amp;q_{n-1} h^2 - 2 &amp; 1+\frac{p_{n-1}h}{2}\\
+&amp; &amp; &amp; &amp; 1-\frac{p_nh}{2}&amp;q_n h^2 - 2  \end{pmatrix}\begin{pmatrix}u_1\\ u_2\\ u_3 \\ \vdots\\  \\u_{n-1}\\ u_n \end{pmatrix} = h^2 \begin{pmatrix}f_1\\ f_2\\ f_3 \\ \vdots\\  \\f_{n-1}\\ f_n \end{pmatrix} + \begin{pmatrix}-\left[1 -\frac{p_1 h}{2}\right]u_{\alpha} \\ 0\\  \vdots\\  \\0 \\ - \left[1+\frac{p_nh}{2}\right]u_{\beta} \end{pmatrix} \end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[Au=h^2f+c=b\]</div>
+<p>Observación:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}A= \begin{pmatrix} - 2 &amp; 1 \\ 1&amp;- 2 &amp; 1\\  &amp;1&amp;- 2 &amp; 1\\ &amp; &amp;  \ddots  &amp; \ddots  &amp; \ddots \\ 
+&amp; &amp; &amp;  1&amp;- 2 &amp; 1\\
+&amp; &amp; &amp; &amp; 1&amp; - 2  \end{pmatrix}+\begin{pmatrix} q_1 h^2 &amp;\frac{p_1h}{2}\\ -\frac{p_2h}{2}&amp;q_2 h^2 &amp; \frac{p_2h}{2}\\  &amp;-\frac{p_3h}{2}&amp;q_3 h^2 &amp; \frac{p_3h}{2}\\ &amp; &amp;  \ddots  &amp; \ddots  &amp; \ddots \\ 
+&amp; &amp; &amp;  -\frac{p_{n-1}h}{2}&amp;q_{n-1} h^2  &amp;\frac{p_{n-1}h}{2}\\
+&amp; &amp; &amp; &amp; -\frac{p_nh}{2}&amp;q_n h^2   \end{pmatrix} \end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}A= \begin{pmatrix} - 2 &amp; 1 \\ 1&amp;- 2 &amp; 1\\  &amp;1&amp;- 2 &amp; 1\\ &amp; &amp;  \ddots  &amp; \ddots  &amp; \ddots \\ 
+&amp; &amp; &amp;  1&amp;- 2 &amp; 1\\
+&amp; &amp; &amp; &amp; 1&amp; - 2  \end{pmatrix}+ h^2\begin{pmatrix} q_1  \\ &amp;q_2  &amp;\\  &amp;&amp;q_3  &amp; \\ &amp; &amp;    &amp; \ddots  &amp;  \\ &amp; &amp; &amp;  &amp;q_{n-1}   &amp;\\
+&amp; &amp; &amp; &amp; &amp;q_n    \end{pmatrix}+\frac{h}{2}\begin{pmatrix}0  &amp;p_1\\ -p_2&amp; 0&amp; p_2\\  &amp;-p_3&amp;0 &amp; p_3\\ &amp; &amp;  \ddots  &amp; \ddots  &amp; \ddots \\ &amp; &amp; &amp;  -p_{n-1}&amp; 0 &amp;p_{n-1}\\
+&amp; &amp; &amp; &amp; -p_n&amp; 0  \end{pmatrix}  \end{split}\]</div>
+<p>Resolviendo el sistema de ecuaciones $<span class="math notranslate nohighlight">\(Au=b\)</span>$ se obtiene la solución aproximada en cada punto interior de la malla.</p>
+<div class="section" id="font-color-blue-implementacion-numerica-font">
+<h3><a class="toc-backref" href="#id3"><font color=blue> Implementación numérica<font></a><a class="headerlink" href="#font-color-blue-implementacion-numerica-font" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Definimos la función <code class="docutils literal notranslate"><span class="pre">prodA</span></code> que se encargará de calcular el vector que resulte del producto <span class="math notranslate nohighlight">\(Au\)</span>, sin hacer el cálculo explícito de la matriz <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="n">prodA</span><span class="p">(</span><span class="n">X</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Float64</span><span class="p">},</span><span class="n">h</span><span class="o">::</span><span class="kt">Float64</span><span class="p">,</span><span class="n">q</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Float64</span><span class="p">},</span><span class="n">p</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Float64</span><span class="p">})</span>
+    <span class="n">n</span>  <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    
+    <span class="n">A1X</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">A1X</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span><span class="n">X</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>    
+    <span class="n">A1X</span><span class="p">[</span><span class="mi">2</span><span class="o">:</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="k">end</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="n">X</span><span class="p">[</span><span class="mi">2</span><span class="o">:</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span><span class="n">X</span><span class="p">[</span><span class="mi">3</span><span class="o">:</span><span class="k">end</span><span class="p">]</span>
+    <span class="n">A1X</span><span class="p">[</span><span class="k">end</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="n">X</span><span class="p">[</span><span class="k">end</span><span class="p">]</span>
+    
+    <span class="n">A2X</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">A2X</span> <span class="o">=</span><span class="n">h</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="n">q</span><span class="o">.*</span><span class="n">X</span>
+    
+    <span class="n">A3X</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">A3X</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">h</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.*</span><span class="n">X</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>    
+    <span class="n">A3X</span><span class="p">[</span><span class="mi">2</span><span class="o">:</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">h</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span> <span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="o">:</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.*</span><span class="p">(</span><span class="o">-</span><span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="k">end</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="n">X</span><span class="p">[</span><span class="mi">3</span><span class="o">:</span><span class="k">end</span><span class="p">])</span>
+    <span class="n">A3X</span><span class="p">[</span><span class="k">end</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">h</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">p</span><span class="p">[</span><span class="k">end</span><span class="p">]</span><span class="o">.*</span><span class="n">X</span><span class="p">[</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    
+    <span class="n">AX</span> <span class="o">=</span> <span class="n">A1X</span><span class="o">+</span><span class="n">A2X</span><span class="o">+</span><span class="n">A3X</span>
+    <span class="k">return</span> <span class="n">AX</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Definimos la función <code class="docutils literal notranslate"><span class="pre">vecb</span></code> que se encargará de calcular el vector del lado derecho de la ecuación <span class="math notranslate nohighlight">\(Au=b\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="n">vecb</span><span class="p">(</span><span class="n">f</span><span class="o">::</span><span class="kt">Function</span><span class="p">,</span> <span class="n">px</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Float64</span><span class="p">},</span> <span class="n">u₀</span><span class="o">::</span><span class="kt">Number</span><span class="p">,</span> <span class="n">uₙ₊₁</span><span class="o">::</span><span class="kt">Number</span><span class="p">,</span><span class="n">p</span><span class="o">::</span><span class="kt">Function</span><span class="p">)</span>
+    <span class="c"># núm de pts en partición</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">px</span><span class="p">)</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">px</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="n">px</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c"># lado derecho de la ecuación diferencial en la partición</span>
+    <span class="n">fx</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="p">(</span><span class="n">px</span><span class="p">)</span>
+    <span class="c"># lado derecho del sistema de ecuaciones lineales</span>
+    <span class="n">b</span>  <span class="o">=</span> <span class="n">fx</span><span class="o">*</span><span class="n">h</span><span class="o">^</span><span class="mi">2</span>
+    <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="p">(</span><span class="n">px</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="p">(</span><span class="n">h</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span><span class="o">*</span><span class="n">u₀</span>
+    <span class="n">b</span><span class="p">[</span><span class="k">end</span><span class="p">]</span><span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="k">end</span><span class="p">]</span><span class="o">-</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="p">(</span><span class="n">px</span><span class="p">[</span><span class="k">end</span><span class="p">])</span><span class="o">*</span><span class="p">(</span><span class="n">h</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">uₙ₊₁</span>
+    <span class="k">return</span> <span class="n">b</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Cargamos los paquetes para visualización y el uso de algunas funciones útiles.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="n">Printf</span><span class="p">,</span> <span class="n">LinearAlgebra</span><span class="p">,</span><span class="n">LaTeXStrings</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>La función <code class="docutils literal notranslate"><span class="pre">miCG</span></code> resuelve el sistema <span class="math notranslate nohighlight">\(Au=b\)</span> por medio del método del grafiente conjugado</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="n">miCG</span><span class="p">(</span><span class="n">fun</span><span class="o">::</span><span class="kt">Function</span><span class="p">,</span><span class="n">b</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Float64</span><span class="p">},</span> <span class="n">itmax</span><span class="o">::</span><span class="kt">Int64</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="n">tol</span><span class="o">::</span><span class="kt">Float64</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">)</span>
+        <span class="cm">#=</span>
+<span class="cm">            Rutina para resolver sistema de ecuaciones lineales</span>
+<span class="cm">                Ax=b</span>
+<span class="cm">            por método del gradiente conjugado</span>
+<span class="cm">    </span>
+<span class="cm">            Entrada: </span>
+<span class="cm">                función fun para realizar producto matriz vector</span>
+<span class="cm">                arreglo b   con el lado derecho</span>
+<span class="cm">            Salida:</span>
+<span class="cm">                arreglo x con la aproximación de la solución</span>
+<span class="cm">        =#</span>
+
+
+            <span class="n">l</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+            <span class="c"># aprox inicial en el origen</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> 
+            <span class="c"># gradiente inicial = residual inicial = - lado derecho</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="o">-</span><span class="n">copy</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> 
+            <span class="c"># primera dirección contraria al gradiente inicial</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="o">-</span><span class="n">copy</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+            <span class="c"># contador </span>
+            <span class="n">it</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="c"># máximo numéro de iteraciones</span>
+            <span class="c">#itmax = 300</span>
+            <span class="c"># tamaño del gradiente</span>
+            <span class="n">ng</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+            <span class="c"># toleracia</span>
+            <span class="c">#tol = 1e-5</span>
+            <span class="c"># CICLO PRINCIPAL</span>
+            <span class="k">while</span> <span class="n">ng</span> <span class="o">≥</span> <span class="n">tol</span> <span class="c"># criterio de paro por tamaño del gradiente</span>
+                <span class="c"># muestra tamaño del gradiente</span>
+                <span class="n">cad</span> <span class="o">=</span> <span class="nd">@sprintf</span> <span class="s">&quot;</span><span class="si">%1.5e</span><span class="s">&quot;</span> <span class="n">ng</span>
+                <span class="n">display</span><span class="p">(</span><span class="n">latexstring</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\$\\</span><span class="s">|g_{</span><span class="si">$it</span><span class="s">}</span><span class="se">\\</span><span class="s">|</span><span class="se">\$</span><span class="s"> = &quot;</span><span class="o">*</span><span class="n">cad</span><span class="p">))</span>
+                <span class="c"># rutina para producto matriz vector</span>
+                <span class="n">Ad</span> <span class="o">=</span> <span class="n">fun</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+                <span class="c"># mínimo sobre la línea</span>
+                <span class="n">α</span>  <span class="o">=</span> <span class="p">(</span><span class="n">g</span><span class="o">&#39;*</span><span class="n">g</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">d</span><span class="o">&#39;*</span><span class="n">Ad</span><span class="p">)</span>
+                <span class="c"># actualiza la aproximación</span>
+                <span class="n">x</span> <span class="o">+=</span>  <span class="n">α</span><span class="o">*</span><span class="n">d</span>
+                <span class="c"># nuevo gradiente ortogonal al anterior</span>
+                <span class="n">gnew</span> <span class="o">=</span> <span class="n">g</span> <span class="o">+</span> <span class="n">α</span><span class="o">*</span><span class="n">Ad</span>
+                <span class="c"># coeficientes para A-ortogonalidad de las direcciones</span>
+                <span class="n">β</span> <span class="o">=</span> <span class="p">(</span><span class="n">gnew</span><span class="o">&#39;*</span><span class="n">gnew</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">g</span><span class="o">&#39;*</span><span class="n">g</span><span class="p">)</span>
+                <span class="c"># actualiza gradiente</span>
+                <span class="n">g</span> <span class="o">=</span> <span class="n">gnew</span>
+                <span class="c"># tamaño del gradiente</span>
+                <span class="n">ng</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+                <span class="c"># actualiza dirección</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="o">-</span><span class="n">g</span> <span class="o">+</span> <span class="n">β</span><span class="o">*</span><span class="n">d</span>
+                <span class="c"># actualiza contador</span>
+                <span class="n">it</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="c"># criterio de paro por iteraciones</span>
+                <span class="p">(</span> <span class="n">it</span> <span class="o">≥</span> <span class="n">itmax</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="k">break</span>
+            <span class="k">end</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">&lt;</span> <span class="n">itmax</span> <span class="p">)</span> 
+               <span class="n">println</span><span class="p">(</span><span class="s">&quot;salí por tamaño de gradiente&quot;</span><span class="p">)</span>
+            <span class="k">else</span>
+               <span class="n">println</span><span class="p">(</span><span class="s">&quot;salí por iteraciones&quot;</span><span class="p">)</span> 
+            <span class="k">end</span>
+            <span class="c"># muestra tamaño del último gradiente</span>
+            <span class="n">cad</span> <span class="o">=</span> <span class="nd">@sprintf</span> <span class="s">&quot;</span><span class="si">%1.5e</span><span class="s">&quot;</span> <span class="n">ng</span>
+            <span class="n">display</span><span class="p">(</span><span class="n">latexstring</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\$\\</span><span class="s">|g_{</span><span class="si">$it</span><span class="s">}</span><span class="se">\\</span><span class="s">|</span><span class="se">\$</span><span class="s"> = &quot;</span><span class="o">*</span><span class="n">cad</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">x</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Creamos la función <code class="docutils literal notranslate"><span class="pre">ODE2_1DCG</span></code> que resuelve nuestro problema con ayuda de las rutinas previas.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="n">ODE2_1DCG</span><span class="p">(</span><span class="n">f</span><span class="o">::</span><span class="kt">Function</span><span class="p">,</span> <span class="n">p</span><span class="o">::</span><span class="kt">Function</span><span class="p">,</span> <span class="n">q</span><span class="o">::</span><span class="kt">Function</span><span class="p">,</span> <span class="n">n</span><span class="o">::</span><span class="kt">Int64</span><span class="p">,</span> <span class="n">u₀</span><span class="o">::</span><span class="kt">Float64</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">uₙ₊₁</span><span class="o">::</span><span class="kt">Float64</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">α</span><span class="o">::</span><span class="kt">Float64</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">β</span><span class="o">::</span><span class="kt">Float64</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="p">)</span>
+    <span class="c"># partición del intervalo [0,1] en n+2 pts</span>
+    <span class="n">px</span> <span class="o">=</span> <span class="n">LinRange</span><span class="p">(</span><span class="n">α</span><span class="p">,</span><span class="n">β</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+    <span class="c"># partición del intervalo (0,1) en n pts</span>
+    <span class="n">px</span> <span class="o">=</span> <span class="n">collect</span><span class="p">(</span><span class="n">px</span><span class="p">)[</span><span class="mi">2</span><span class="o">:</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c"># lado derecho del sistema de ecuaciones</span>
+    <span class="n">h</span><span class="o">=</span><span class="p">(</span><span class="n">β</span><span class="o">-</span><span class="n">α</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">vecb</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">u₀</span><span class="p">,</span> <span class="n">uₙ₊₁</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+    <span class="c"># solución del sistema de ecuaciones lineales por CG</span>
+    <span class="n">P</span><span class="o">=</span><span class="n">collect</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="p">(</span><span class="n">px</span><span class="p">))</span>
+    <span class="n">Q</span><span class="o">=</span><span class="n">collect</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="p">(</span><span class="n">px</span><span class="p">))</span>
+    <span class="n">F</span><span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">-&gt;</span> <span class="n">prodA</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">h</span><span class="p">,</span><span class="n">Q</span><span class="p">,</span><span class="n">P</span><span class="p">)</span>
+    <span class="n">ûx</span> <span class="o">=</span> <span class="n">miCG</span><span class="p">(</span><span class="n">F</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">px</span><span class="p">,</span> <span class="n">ûx</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="font-color-blue-ejemplo-01-font">
+<h4><a class="toc-backref" href="#id4"><font color=blue> Ejemplo 01 <font></a><a class="headerlink" href="#font-color-blue-ejemplo-01-font" title="Enlazar permanentemente con este título">¶</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">x</span><span class="o">-&gt;</span> <span class="mf">0.0</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">x</span><span class="o">-&gt;</span> <span class="mf">0.0</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">x</span><span class="o">-&gt;</span> <span class="mf">1.0</span>
+
+<span class="n">α</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">β</span> <span class="o">=</span> <span class="mf">10.0</span>
+
+<span class="n">u₀</span>   <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">uₙ₊₁</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">75</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Solución numérica:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">px</span><span class="p">,</span> <span class="n">ûx</span><span class="o">=</span><span class="n">ODE2_1DCG</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">u₀</span><span class="p">,</span> <span class="n">uₙ₊₁</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">β</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Solución exacta:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="n">PGFPlotsX</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="c"># solución analítica </span>
+<span class="n">u</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="n">csc</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">ux</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="p">(</span><span class="n">px</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Visualización de las soluciones:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span> <span class="o">=</span> <span class="nd">@pgf</span> <span class="n">Axis</span><span class="p">({</span>
+        <span class="n">height</span> <span class="o">=</span> <span class="s">&quot;12cm&quot;</span><span class="p">,</span>
+        <span class="n">width</span>  <span class="o">=</span> <span class="s">&quot;12cm&quot;</span><span class="p">,</span>
+        <span class="n">xlabel</span> <span class="o">=</span> <span class="n">L</span><span class="s">&quot;</span><span class="si">$x</span><span class="s">$&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="n">PlotInc</span><span class="p">({</span><span class="s">&quot;no marks&quot;</span><span class="p">,</span>  <span class="n">color</span><span class="o">=</span><span class="s">&quot;blue&quot;</span><span class="p">},</span><span class="n">Coordinates</span><span class="p">(</span><span class="n">px</span><span class="p">,</span><span class="n">ux</span><span class="p">)),</span>
+        <span class="n">LegendEntry</span><span class="p">(</span><span class="s">&quot;exact&quot;</span><span class="p">),</span>
+        <span class="n">PlotInc</span><span class="p">({</span><span class="s">&quot;only marks&quot;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">},</span> <span class="n">Coordinates</span><span class="p">(</span><span class="n">px</span><span class="p">,</span><span class="n">ûx</span><span class="p">)),</span>
+        <span class="n">LegendEntry</span><span class="p">(</span><span class="s">&quot;aprox&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="font-color-blue-ejemplo-02-font">
+<h4><a class="toc-backref" href="#id5"><font color=blue> Ejemplo 02<font></a><a class="headerlink" href="#font-color-blue-ejemplo-02-font" title="Enlazar permanentemente con este título">¶</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">x</span><span class="o">-&gt;</span> <span class="mf">0.0</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">x</span><span class="o">-&gt;</span> <span class="n">x</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">x</span><span class="o">-&gt;</span> <span class="o">-</span><span class="mf">1.0</span>
+
+<span class="n">α</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">β</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+<span class="n">u₀</span>   <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">uₙ₊₁</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Solución numérica:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">px</span><span class="p">,</span> <span class="n">ûx</span><span class="o">=</span><span class="n">ODE2_1DCG</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">u₀</span><span class="p">,</span> <span class="n">uₙ₊₁</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">β</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Solución exacta:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="c"># solución analítica</span>
+<span class="n">u</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span><span class="n">x</span>
+<span class="n">ux</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="p">(</span><span class="n">px</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Visualización de las soluciones:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span> <span class="o">=</span> <span class="nd">@pgf</span> <span class="n">Axis</span><span class="p">({</span>
+        <span class="n">height</span> <span class="o">=</span> <span class="s">&quot;12cm&quot;</span><span class="p">,</span>
+        <span class="n">width</span>  <span class="o">=</span> <span class="s">&quot;12cm&quot;</span><span class="p">,</span>
+        <span class="n">xlabel</span> <span class="o">=</span> <span class="n">L</span><span class="s">&quot;</span><span class="si">$x</span><span class="s">$&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="n">PlotInc</span><span class="p">({</span><span class="s">&quot;no marks&quot;</span><span class="p">,</span>  <span class="n">color</span><span class="o">=</span><span class="s">&quot;blue&quot;</span><span class="p">},</span><span class="n">Coordinates</span><span class="p">(</span><span class="n">px</span><span class="p">,</span><span class="n">ux</span><span class="p">)),</span>
+        <span class="n">LegendEntry</span><span class="p">(</span><span class="s">&quot;exact&quot;</span><span class="p">),</span>
+        <span class="n">PlotInc</span><span class="p">({</span><span class="s">&quot;only marks&quot;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">},</span> <span class="n">Coordinates</span><span class="p">(</span><span class="n">px</span><span class="p">,</span><span class="n">ûx</span><span class="p">)),</span>
+        <span class="n">LegendEntry</span><span class="p">(</span><span class="s">&quot;aprox&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="font-color-blue-ejemplo-03-font">
+<h4><a class="toc-backref" href="#id6"><font color=blue> Ejemplo 03<font></a><a class="headerlink" href="#font-color-blue-ejemplo-03-font" title="Enlazar permanentemente con este título">¶</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="o">=</span> <span class="n">x</span><span class="o">-&gt;</span> <span class="mi">1</span><span class="o">/</span><span class="n">x</span><span class="o">^</span><span class="mi">2</span>
+<span class="n">p</span><span class="o">=</span> <span class="n">x</span><span class="o">-&gt;</span> <span class="mi">3</span><span class="o">/</span><span class="n">x</span>
+<span class="n">q</span><span class="o">=</span> <span class="n">x</span><span class="o">-&gt;</span> <span class="mi">1</span><span class="o">/</span><span class="n">x</span><span class="o">^</span><span class="mi">2</span>
+
+<span class="n">α</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">β</span> <span class="o">=</span> <span class="mf">2.0</span>
+
+<span class="n">u₀</span>   <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">uₙ₊₁</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">20</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Solución numérica:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">px</span><span class="p">,</span> <span class="n">ûx</span><span class="o">=</span><span class="n">ODE2_1DCG</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">u₀</span><span class="p">,</span> <span class="n">uₙ₊₁</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">β</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Solución exacta:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="c"># solución analítica</span>
+<span class="n">u</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">ux</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="p">(</span><span class="n">px</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Visualización de las soluciones:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span> <span class="o">=</span> <span class="nd">@pgf</span> <span class="n">Axis</span><span class="p">({</span>
+        <span class="n">height</span> <span class="o">=</span> <span class="s">&quot;12cm&quot;</span><span class="p">,</span>
+        <span class="n">width</span>  <span class="o">=</span> <span class="s">&quot;12cm&quot;</span><span class="p">,</span>
+        <span class="n">xlabel</span> <span class="o">=</span> <span class="n">L</span><span class="s">&quot;</span><span class="si">$x</span><span class="s">$&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="n">PlotInc</span><span class="p">({</span><span class="s">&quot;no marks&quot;</span><span class="p">,</span>  <span class="n">color</span><span class="o">=</span><span class="s">&quot;blue&quot;</span><span class="p">},</span><span class="n">Coordinates</span><span class="p">(</span><span class="n">px</span><span class="p">,</span><span class="n">ux</span><span class="p">)),</span>
+        <span class="n">LegendEntry</span><span class="p">(</span><span class="s">&quot;exact&quot;</span><span class="p">),</span>
+        <span class="n">PlotInc</span><span class="p">({</span><span class="s">&quot;only marks&quot;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">},</span> <span class="n">Coordinates</span><span class="p">(</span><span class="n">px</span><span class="p">,</span><span class="n">ûx</span><span class="p">)),</span>
+        <span class="n">LegendEntry</span><span class="p">(</span><span class="s">&quot;aprox&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "Jeshua-Romero-Guadarrama/IntroduccionCienciaDatosPython",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "julia-1.6"
+        },
+        kernelOptions: {
+            kernelName: "julia-1.6",
+            path: "./files"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'julia-1.6'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="16.%20Aproximaci%C3%B3n%20de%20operadores%20diferenciales.html" title="previous page">Aproximación de operadores diferenciales</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          Por Jeshua Romero Guadarrama<br/>
+        
+            &copy; Derechos de autor 2021.<br/>
+          <div class="extra_footer">
+            <script src="https://kit.fontawesome.com/37a97f957d.js" crossorigin="anonymous"></script> <script>mermaid.init();</script> <div class="container-lg mt-3"> <div class="row"> <div class="col-xl-3"> <div class="footerImages"> <br> <br> <br> <br> <center><a href="https://www.jeshuanomics.com/"><img src="https://raw.githubusercontent.com/Jeshua-Romero-Guadarrama/CienciaDatosPython/main/images/Logo.png" height="130" alt="JeshuaNomics" style="float:center"></a></center> </div> </div> <div class="col-xl-6 d-flex"> <div class="container"> <center><a href="https://www.datascience.jeshuanomics.com/"><img src="https://raw.githubusercontent.com/Jeshua-Romero-Guadarrama/CienciaDatosPython/main/images/banner.png" alt="JeshuaNomics-blanco" style="background:white; padding:10px; height:66px;"></a></center> <center><div class="mb-3"><a href="https://www.jeshuanomics.com/"><span class="label"></span>JeshuaNomics - DataScience</a></div></center> <div class="row"> <div class="col-6 d-flex" style="justify-content:center"> <ul> <li><a href="https://github.com/JeshuaNomics"><i class="fa fa-github" aria-hidden="true"></i><span class="label"></span> Git Hub  </a></li> <li><a href="https://www.facebook.com/JeshuaNomics/"><i class="fa fa-facebook" aria-hidden="true"></i><span class="label"></span> Facebook  </a></li> <li><a href="https://twitter.com/JeshuaNomics"><i class="fa fa-twitter" aria-hidden="true"></i><span class="label"></span> Twitter  </a></li> <li><a href="https://www.linkedin.com/in/jeshua-romero-guadarrama/"><i class="fa fa-linkedin" aria-hidden="true"></i> Linkedin  </a></li> <li><a href="mailto:jeshuanomics@gmail.com?Subject=Ciencia%20de%20Datos"><i class="fa fa-envelope" aria-hidden="true"></i><span class="label"></span> Contáctanos </a></li> </ul> </div> <div class="col-6 d-flex" style="justify-content:center"> <ul> <li><a href="https://vk.com/jeshuanomics"><i class="fa fa-vk" aria-hidden="true"></i><span class="label"></span> Vkontakte  </a></li> <li><a href="https://jeshuanomics.tumblr.com/"><i class="fa fa-tumblr" aria-hidden="true"></i><span class="label"></span> Tumblr  </a></li> <li><a href="https://www.youtube.com/channel/UCY7f84mJGvMN7TF7XI4-Jgg?view_as=subscriber/"><i class="fa fa-youtube-play" aria-hidden="true"></i><span class="label"></span> YouTube  </a></li> <li><a href="https://www.instagram.com/JeshuaNomics/"><i class="fa fa-instagram" aria-hidden="true"></i><span class="label"></span> Instagram  </a></li> <li><a href="/CienciaDatosPython/content/recipes/boilerplate/people.html"><i class="fab fa-paypal" aria-hidden="true"></i><span class="label"></span> Donar </a></li> </ul> </div> </div> </div> </div> <div class="col-xl-3"> <br> <br> <br> <br> <center><a href="https://www.datascience.jeshuanomics.com/"><img src="https://julialang.org/assets/infra/logo.svg" height="58" alt="Julia" style="float:center"></a></center> <center><a href="https://www.unam.mx/"><img src="https://raw.githubusercontent.com/Jeshua-Romero-Guadarrama/CienciaDatosPython/main/images/UNAM.png" height="66" alt="UNAM" style="background:rgb(3,25,59); float:center"></a></center> </div> </div> </div> <div class="row_footer my-3"> <center>Optimización Numércia en Julia is licensed under the <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International</a> (CC BY 4.0) license.</center> </div>
+          </div>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

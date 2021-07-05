@@ -1,37 +1,37 @@
 format: jb-book
-root: docs/Sobre_este_sitio
+root: files/Sobre_este_sitio
 chapters:
-  - file: docs/1. Las libretas de Jupyter
+  - file: files/1. Las libretas de Jupyter
     title: 1. Las Libretas de Jupyter
-  - file: docs/2. Introducción a Markdown
+  - file: files/2. Introducción a Markdown
     title: 2. Introducción a Markdown
-  - file: docs/3. Introducción a Julia
+  - file: files/3. Introducción a Julia
     title: 3. Introducción a Julia
-  - file: docs/4. Estructuras de datos
+  - file: files/4. Estructuras de datos
     title: 4. Estructuras de datos
-  - file: docs/5. Ciclos y condicionales
+  - file: files/5. Ciclos y condicionales
     title: 5. Ciclos y condicionales
-  - file: docs/6. Operaciones y funciones
+  - file: files/6. Operaciones y funciones
     title: 6. Operaciones y funciones
-  - file: docs/7. Factorizaciones
+  - file: files/7. Factorizaciones
     title: 7. Factorizaciones
-  - file: docs/8. Graficas y animaciones
+  - file: files/8. Graficas y animaciones
     title: 8. Graficas y animaciones
-  - file: docs/9. Curvas de nivel
+  - file: files/9. Curvas de nivel
     title: 9. Curvas de nivel
-  - file: docs/10. Ejercicios de funciones y gráficas
+  - file: files/10. Ejercicios de funciones y gráficas
     title: 10. Ejercicios de funciones y gráficas
-  - file: docs/11. Curvas de nivel PlotlyJS
+  - file: files/11. Curvas de nivel PlotlyJS
     title: 11. Curvas de nivel PlotlyJS
-  - file: docs/12. Lenguaje simbólico SymEngine
+  - file: files/12. Lenguaje simbólico SymEngine
     title: 12. Lenguaje simbólico SymEngine
-  - file: docs/13. Ejemplo de módulos
+  - file: files/13. Ejemplo de módulos
     title: 13. Ejemplo de módulos
-  - file: docs/14. Gradiente conjugado
+  - file: files/14. Gradiente conjugado
     title: 14. Gradiente conjugado
-  - file: docs/15. Introducción a los métodos numéricos
+  - file: files/15. Introducción a los métodos numéricos
     title: 15. Introducción a los métodos numéricos
-  - file: docs/16. Aproximación de operadores diferenciales
+  - file: files/16. Aproximación de operadores diferenciales
     title: 16. Aproximación de operadores diferenciales
-  - file: docs/17. Método de diferencias finitas
+  - file: files/17. Método de diferencias finitas
     title: 17. Método de diferencias finitas

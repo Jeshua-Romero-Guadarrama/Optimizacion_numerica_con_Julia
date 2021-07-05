@@ -2,7 +2,7 @@
 # Configuración del libro
 title                         : Optimización Numérica en Julia
 author                        : Jeshua Romero Guadarrama
-logo                          : 'logo.jpg'
+logo                          : 'logo.png'
 email                         : jeshua_romero_guadarrama@ciencias.unam.mx
 description: >-
   Este libro presenta un conjunto de conferencias sobre programación Julia para Optimización Numérica 2021-2 por **Pablo Barrera Sánchez** y **Mario Rafael Nolasco Estrada**.
@@ -17,7 +17,7 @@ latex:
     targetname                : book.tex
 
 html:
-  favicon                     : 'logo.jpg'
+  favicon                     : 'logo.png'
   home_page_in_navbar         : false
   use_edit_page_button        : false
   use_repository_button       : false
@@ -33,13 +33,13 @@ html:
               <br>
               <br>
               <br>
-              <a href="https://www.jeshuanomics.com/"><img src="https://raw.githubusercontent.com/Jeshua-Romero-Guadarrama/CienciaDatosPython/main/images/Logo.png" height="120" alt="JeshuaNomics" style="float:center"></a><br>
+              <center><a href="https://www.jeshuanomics.com/"><img src="https://raw.githubusercontent.com/Jeshua-Romero-Guadarrama/CienciaDatosPython/main/images/Logo.png" height="130" alt="JeshuaNomics" style="float:center"></a></center>
             </div>
         </div>
         <div class="col-xl-6 d-flex">
           <div class="container">
-            <a href="https://www.datascience.jeshuanomics.com/"><img src="https://raw.githubusercontent.com/Jeshua-Romero-Guadarrama/CienciaDatosPython/main/images/banner.png" alt="JeshuaNomics-blanco" style="background:white; padding:10px; height:66px;"></a><br>
-            <div class="mb-3"><a href="https://www.jeshuanomics.com/"><span class="label"></span>JeshuaNomics - DataScience</a></div>
+            <center><a href="https://www.datascience.jeshuanomics.com/"><img src="https://raw.githubusercontent.com/Jeshua-Romero-Guadarrama/CienciaDatosPython/main/images/banner.png" alt="JeshuaNomics-blanco" style="background:white; padding:10px; height:66px;"></a></center>
+            <center><div class="mb-3"><a href="https://www.jeshuanomics.com/"><span class="label"></span>JeshuaNomics - DataScience</a></div></center>
             <div class="row">
               <div class="col-6 d-flex" style="justify-content:center">
                 <ul>
@@ -67,13 +67,13 @@ html:
           <br>
           <br>
           <br>
-          <a href="https://www.datascience.jeshuanomics.com/"><img src="https://raw.githubusercontent.com/Jeshua-Romero-Guadarrama/CienciaDatosPython/main/images/Python.png" height="60" alt="Python" style="float:center"></a><br>       
-          <a href="https://www.unam.mx/"><img src="https://raw.githubusercontent.com/Jeshua-Romero-Guadarrama/CienciaDatosPython/main/images/UNAM.png" height="68" alt="UNAM" style="float:center"></a><br>
+          <center><a href="https://www.datascience.jeshuanomics.com/"><img src="https://julialang.org/assets/infra/logo.svg" height="58" alt="Julia" style="float:center"></a></center>
+          <center><a href="https://www.unam.mx/"><img src="https://raw.githubusercontent.com/Jeshua-Romero-Guadarrama/CienciaDatosPython/main/images/UNAM.png" height="66" alt="UNAM" style="background:rgb(3,25,59); float:center"></a></center>
         </div>
       </div>
     </div>
     <div class="row_footer my-3">        
-      Optimización Numércia en Julia is licensed under the <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International</a> (CC BY 4.0) license.
+      <center>Optimización Numércia en Julia is licensed under the <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International</a> (CC BY 4.0) license.</center>
     </div>
   comments:
     hypothesis                : true
